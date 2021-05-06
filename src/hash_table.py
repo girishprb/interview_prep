@@ -17,6 +17,7 @@ class HashTable:
 
         if not self.array[idx]:
             self.array[idx] = [[key, value]]
+            self.total += 1
             return
 
         for kvp in self.array[idx]:
@@ -25,6 +26,7 @@ class HashTable:
                 return
 
         self.array[idx].append([key, value])
+        self.total += 1
         return
 
     def get(self, key):
@@ -40,7 +42,7 @@ class HashTable:
 
     def __is_full(self):
         count = sum(1 for x in self.array if x)
-        return count < len(self.array) // 2
+        return count >= len(self.array) // 2
 
     def __double(self):
         ht2 = HashTable(length=len(self.array) * 2)
@@ -52,6 +54,7 @@ class HashTable:
                 ht2.set(kvp[0], kvp[1])
 
         self.array = ht2.array
+        self.total = ht2.total
 
     def __setitem__(self, key, value):
         self.set(key, value)
@@ -76,6 +79,7 @@ class TestHashTable(unittest.TestCase):
         ht['xyz'] = 456
         assert ht['abc'] == 123
         assert ht['xyz'] == 456
+        assert len(ht) == 2
 
 if __name__ == '__main__':
     unittest.main()
